@@ -17,13 +17,13 @@ module.exports = {
         res.locals.userData = doc;
         next();
       })
-    }).catch(() => res.redirect('/login')); // NEED TO UPDATE THESE!!
+    }).catch(() => res.redirect('/'));
   },
   verifyUser: (req, res, next) => {
     User.findOne(req.body, (err, doc) => {
       if (err || !doc) {
         console.error(err)
-        return res.redirect('/signup'); // NEED TO UPDATE THESE!!
+        return res.redirect('/');
       }
       res.locals.userData = doc;
       next();
