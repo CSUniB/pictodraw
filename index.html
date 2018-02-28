@@ -9,7 +9,17 @@
 
 <body>
 	<h1>PictoDraw</h1>
-	<div id="root"> </div>
+	<h4>Login</h4>
+	<form method='POST' action='/login'>
+    <input name="username" type="text" placeholder="username"></input>
+    <input type='submit' value="login">
+  </form>
+
+  <h4>Signup</h4>
+	<form method='POST' action='/signup'>
+    <input name="username" type="text" placeholder="username"></input>
+    <input type='submit' value="signup">
+  </form>
 </body>
-<script src='./build/bundle.js'></script>
+<!-- <script src='./build/bundle.js'></script> -->
 </html>
