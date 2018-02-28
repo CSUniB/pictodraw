@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../redux/actions/actions';
-import Palette from './Palette';
+import PaletteContainer from './PaletteContainer';
 
 const mapStateToProps = store => {
   return {
@@ -42,6 +42,8 @@ class CanvasBoard extends Component {
   componentDidMount() {
     let initContext = this.refs.canvas.getContext('2d');
     this.props.initializeContext(initContext);
+    const { color, join, width } = this.state.default;
+    this.props.resetContext(color, join, width);
     // this.setState({context: this.refs.canvas.getContext('2d')});
   }
 
@@ -53,8 +55,7 @@ class CanvasBoard extends Component {
   redraw(){
     this.props.context.clearRect(0, 0, this.props.context.canvas.width, this.props.context.canvas.height); // Clears the canvas
 
-    const { color, join, width } = this.state.default;
-    this.props.resetContext( color, join, width);
+    this.props.resetContext();
 
     for(let i = 0; i < this.props.clickX.length; i++) {
       this.props.context.beginPath();
@@ -96,13 +97,18 @@ class CanvasBoard extends Component {
       <canvas ref="canvas" width={750} height={450}/>
     )
 
+    let palette = (<div></div>);
+
     if (this.props.drawer) {
-      canvas = ( <canvas onMouseDown={(e)=>this.startDraw(e)} onMouseMove={(e)=>this.draw(e)} onMouseUp={(e)=>this.stopDraw(e)} onMouseLeave={(e)=>this.stopDraw(e)} ref="canvas" width={750} height={450}/> )
+      canvas = ( 
+        <canvas onMouseDown={(e)=>this.startDraw(e)} onMouseMove={(e)=>this.draw(e)} onMouseUp={(e)=>this.stopDraw(e)} onMouseLeave={(e)=>this.stopDraw(e)} ref="canvas" width={750} height={450}/> );
+      palette = <PaletteContainer />
+
     }
     return(
       <div id='canvasDiv'>
         {canvas}
-       <Palette />
+        {palette}
       </div>
     );
   }

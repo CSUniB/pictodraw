@@ -71,7 +71,7 @@ const initializeContext = (newContext) => {
 
 const resetContext = (strokeStyle, join, width) => {
 	return {
-		type: types.INIT_CONTEXT,
+		type: types.RESET_CONTEXT,
 		strokeStyle,
 		join,
 		width

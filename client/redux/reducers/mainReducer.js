@@ -99,15 +99,15 @@ const mainReducer = (state=initialState, action) => {
       );
 
     case types.RESET_CONTEXT:
-      let newContext = JSON.parse(JSON.stringify(state.context));
-      newContext.strokeStyle = action.strokeStyle;
-      newContext.lineJoin = action.join;
-      newContext.lineWidth = aciton.width;
+    console.log(state);
+      let tempS = Object.assign({}, state);
+      if (action.strokeStyle) tempS.context.strokeStyle = action.strokeStyle;
+      if (action.join) tempS.context.lineJoin = action.join;
+      if (action.width) tempS.context.lineWidth = action.width;
 
-      return Object.assign({},
-        state,
-        { context: newContext }
-      );
+      console.log(tempS);
+
+      return tempS;
 
     case types.CLEAR_CANVAS:
       const newCanvas = {
