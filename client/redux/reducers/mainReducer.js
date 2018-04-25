@@ -1,8 +1,6 @@
 import * as types from './../actions/actionTypes';
 // import socketController from './../socket';
 
-
-
 const initialState = {
   drawer: true,
   id: '',
@@ -11,11 +9,13 @@ const initialState = {
   correctWord: '',
   messages: [],
   guessInput: '',
+  context: null,
   canvas: {
     clickX: [],
     clickY: [],
     clickDrag: [],
-  }
+  },
+  
 };
 
 const mainReducer = (state=initialState, action) => {
@@ -50,12 +50,6 @@ const mainReducer = (state=initialState, action) => {
         {drawer:drawer},
         {name: name}
       );
-
-    // case types.SET_GUESS_INPUT:
-    //   return Object.assign({},
-    //     state,
-    //     {guessInput: action.guess}
-    //   );
 
     case types.SEND_GUESS:
       const input = document.getElementsByTagName('input').input;
@@ -98,6 +92,24 @@ const mainReducer = (state=initialState, action) => {
         {canvas: canvas}
       );
 
+    case types.INIT_CONTEXT:
+      if(state.context) return state;
+      return Object.assign({},
+        state,
+        {context: action.newContext}
+      );
+
+    case types.RESET_CONTEXT:
+      let newContext = JSON.parse(JSON.stringify(state.context));
+      newContext.strokeStyle = action.strokeStyle;
+      newContext.lineJoin = action.join;
+      newContext.lineWidth = aciton.width;
+
+      return Object.assign({},
+        state,
+        { context: newContext }
+      );
+
     case types.CLEAR_CANVAS:
       const newCanvas = {
         clickX: [],
@@ -109,6 +121,14 @@ const mainReducer = (state=initialState, action) => {
         {canvas: newCanvas}
       );
 
+    case types.CLEAR:
+      console.log('in reducer types.CLEAR')
+
+     
+      return Object.assign({},
+        state,
+        {eraser: eraser}
+      );
 
     default:
       return state;

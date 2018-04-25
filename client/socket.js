@@ -38,6 +38,10 @@ export function socketMiddleware(store) {
       socket.emit('guess', guess);
     }
 
+    if (action.type === types.CLEAR){
+      socket.emit('clear', true);
+    }
+
     if (action.type === types.ADD_CLICK) {
       numOfPixels++;
       canvasPixs.clickX.push(action.x);

@@ -12,6 +12,7 @@ let currentDrawing = {};
 let currentWord = wordController.getANewWord();
 let users = [];
 let drawerIdx = 0;
+let eraser = false;
 clearCanvas();
 
 app.get('/', function (req, res) {
@@ -37,6 +38,16 @@ io.on('connection', function (socket) {
     updataDrawing(canvasPixs);
     socket.broadcast.emit('canvasUpdate', canvasPixs);
   });
+
+  socket.on('clear', (e) => {
+    console.log("IN CLEAR!!!")
+    io.emit('clearCanvas');
+    currentDrawing = {
+      clickX: [],
+      clickY: [],
+      clickDrag: []
+    }
+  })
 
   socket.on('guess', (guess) => {
     const str = `${guess.name}: ${guess.guess}`;
@@ -135,6 +146,7 @@ function clearCanvas() {
 }
 
 function updataDrawing(canvasPixs) {
+  
   currentDrawing.clickX = currentDrawing.clickX.concat(canvasPixs.clickX);
   currentDrawing.clickY = currentDrawing.clickY.concat(canvasPixs.clickY);
   currentDrawing.clickDrag = currentDrawing.clickDrag.concat(canvasPixs.clickDrag);

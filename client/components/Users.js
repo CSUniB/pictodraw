@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../redux/actions/actions';
-
+import UserPanel from './UserPanel';
 
 const mapStateToProps = store => {
   return {
@@ -9,40 +9,17 @@ const mapStateToProps = store => {
   }
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-
-  }
-};
-
-
-
 class Users extends Component {
   constructor(props) {
     super(props);
   }
 
   render() {
-    const allusers = [];
-    for (let i=0; i<this.props.users.length; i++) {
-      const info = `${this.props.users[i].name}`;
-      const userclass = (this.props.users[i].drawer) ? 'drawerBox userBox' : 'guesserBox userBox';
-      const isDrawing = (this.props.users[i].drawer) ? ' is drawing' : ''
-      const user = (
-          <div className={userclass} key={`user${i}`}>
-            {info} {isDrawing}
-          </div>
-        )
-      allusers.push(user);
-    }
-
     return(
-      <div className='userPanel'>
-        {allusers}
-      </div>
-    );
+      <UserPanel users={this.props.users} />
+    )
   }
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Users);
+export default connect(mapStateToProps)(Users);

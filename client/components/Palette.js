@@ -8,7 +8,11 @@ const mapStateToProps = (store) => {
     }
 }
 
-
+const mapDispatchToProps = dispatch => {
+    return {
+        
+    }
+}
 
 class Palette extends Component {
     constructor(props) {
@@ -16,10 +20,13 @@ class Palette extends Component {
     }
 
 
-
-
-
-
-
+    render() {
+        return (
+            <div className='pen-palette'>
+            </div>
+        )
+    }
 
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(Palette);

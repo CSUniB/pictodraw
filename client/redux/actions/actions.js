@@ -62,11 +62,33 @@ const addPixs = (clickX, clickY, clickDrag) => {
 	}
 }
 
+const initializeContext = (newContext) => {
+	return {
+		type: types.INIT_CONTEXT,
+		newContext
+	}
+} 
+
+const resetContext = (strokeStyle, join, width) => {
+	return {
+		type: types.INIT_CONTEXT,
+		strokeStyle,
+		join,
+		width
+	}
+} 
+
 const clearCanvas = () => {
 	return {
 		type: types.CLEAR_CANVAS,
 	}
 } 
+
+const clear = () => {
+	return {
+		type: types.CLEAR,
+	}
+}
 
 module.exports = {
 	setDrawer,
@@ -77,5 +99,9 @@ module.exports = {
 	addMessage,
 	addClick,
 	addPixs,
+	initializeContext,
+	resetContext,
 	clearCanvas,
+	clear,
+	
 }
