@@ -1,8 +1,6 @@
 import * as types from './../actions/actionTypes';
 // import socketController from './../socket';
 
-
-
 const initialState = {
   drawer: true,
   id: '',
@@ -11,6 +9,7 @@ const initialState = {
   correctWord: '',
   messages: [],
   guessInput: '',
+  context: null,
   canvas: {
     clickX: [],
     clickY: [],
@@ -51,12 +50,6 @@ const mainReducer = (state=initialState, action) => {
         {name: name}
       );
 
-    // case types.SET_GUESS_INPUT:
-    //   return Object.assign({},
-    //     state,
-    //     {guessInput: action.guess}
-    //   );
-
     case types.SEND_GUESS:
       const input = document.getElementsByTagName('input').input;
       input.value = '';
@@ -96,6 +89,24 @@ const mainReducer = (state=initialState, action) => {
       return Object.assign({},
         state,
         {canvas: canvas}
+      );
+
+    case types.INIT_CONTEXT:
+      if(state.context) return state;
+      return Object.assign({},
+        state,
+        {context: action.newContext}
+      );
+
+    case types.RESET_CONTEXT:
+      let newContext = JSON.parse(JSON.stringify(state.context));
+      newContext.strokeStyle = action.strokeStyle;
+      newContext.lineJoin = action.join;
+      newContext.lineWidth = aciton.width;
+
+      return Object.assign({},
+        state,
+        { context: newContext }
       );
 
     case types.CLEAR_CANVAS:

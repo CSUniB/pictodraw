@@ -5,6 +5,7 @@ import * as actions from '../redux/actions/actions';
 const mapStateToProps = store => {
   return {
     drawer: store.drawer,
+    context: store.context,
     clickX: store.canvas.clickX,
     clickY: store.canvas.clickY,
     clickDrag: store.canvas.clickDrag
@@ -12,7 +13,11 @@ const mapStateToProps = store => {
 }
 const mapDispatchToProps = dispatch => {
   return {
-    addClick: (x, y, dragging) => dispatch(actions.addClick(x, y, dragging))
+    addClick: (x, y, dragging) => dispatch(actions.addClick(x, y, dragging)),
+    initializeContext: function(newContext) {
+      console.log('in MapDtoP', newContext);
+      return dispatch(actions.initializeContext(newContext))},
+    resetContext: (strokeStyle, join, width) => dispatch(actions.resetContext(strokeStyle, join, width))
   }
 };
 
@@ -20,7 +25,11 @@ class CanvasBoard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      context: null,
+      default: {
+        color: "black",
+        join: "round",
+        width: 5
+      }, 
       paint: false,
     }
     this.redraw = this.redraw.bind(this);
@@ -30,7 +39,9 @@ class CanvasBoard extends Component {
   }
 
   componentDidMount() {
-    this.setState({context: this.refs.canvas.getContext('2d')});
+    let initContext = this.refs.canvas.getContext('2d');
+    this.props.initializeContext(initContext);
+    // this.setState({context: this.refs.canvas.getContext('2d')});
   }
 
   // invoke redraw when we get props from store (updated state)
@@ -39,22 +50,21 @@ class CanvasBoard extends Component {
   }
 
   redraw(){
-    this.state.context.clearRect(0, 0, this.state.context.canvas.width, this.state.context.canvas.height); // Clears the canvas
-    
-    this.state.context.strokeStyle = "black";
-    this.state.context.lineJoin = "round";
-    this.state.context.lineWidth = 5;
+    this.props.context.clearRect(0, 0, this.props.context.canvas.width, this.props.context.canvas.height); // Clears the canvas
+
+    const { color, join, width } = this.state.default;
+    this.props.resetContext( color, join, width);
 
     for(let i = 0; i < this.props.clickX.length; i++) {
-      this.state.context.beginPath();
+      this.props.context.beginPath();
       if(this.props.clickDrag[i] && i) {
-        this.state.context.moveTo(this.props.clickX[i-1], this.props.clickY[i-1]);
+        this.props.context.moveTo(this.props.clickX[i-1], this.props.clickY[i-1]);
        } else {
-         this.state.context.moveTo(this.props.clickX[i]-1, this.props.clickY[i]);
+         this.props.context.moveTo(this.props.clickX[i]-1, this.props.clickY[i]);
        }
-       this.state.context.lineTo(this.props.clickX[i], this.props.clickY[i]);
-       this.state.context.closePath();
-       this.state.context.stroke();
+       this.props.context.lineTo(this.props.clickX[i], this.props.clickY[i]);
+       this.props.context.closePath();
+       this.props.context.stroke();
     }
   }
 
@@ -82,11 +92,11 @@ class CanvasBoard extends Component {
   render() {
     console.log(this.props.drawer);
     let canvas = (
-      <canvas ref="canvas" width={900} height={450}/>
+      <canvas ref="canvas" width={750} height={450}/>
     )
 
     if (this.props.drawer) {
-      canvas = ( <canvas onMouseDown={(e)=>this.startDraw(e)} onMouseMove={(e)=>this.draw(e)} onMouseUp={(e)=>this.stopDraw(e)} onMouseLeave={(e)=>this.stopDraw(e)} ref="canvas" width={900} height={450}/> )
+      canvas = ( <canvas onMouseDown={(e)=>this.startDraw(e)} onMouseMove={(e)=>this.draw(e)} onMouseUp={(e)=>this.stopDraw(e)} onMouseLeave={(e)=>this.stopDraw(e)} ref="canvas" width={750} height={450}/> )
     }
     return(
       <div id='canvasDiv'>

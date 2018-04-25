@@ -30,6 +30,12 @@ canvas {
 	border: 1px solid black;
 }
 
+.pen-palette {
+	width: 250px;
+	height: 50px;
+	border: 1px solid grey;
+}
+
 .messageContainer {
 	margin-left: 20px; 
 }
